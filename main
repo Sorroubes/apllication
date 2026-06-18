@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заявка на сертифікацію СУЯ (ТФ-1-СУЯ)</title>
+    <style>
+        /* ===== Базові стилі ===== */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Times New Roman', 'Segoe UI', Tahoma, serif;
+            background: #e9edf2;
+            padding: 30px 20px;
+        }
+        .app-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        /* ===== ЛІВА КОЛОНКА: ФОРМА ===== */
+        .form-panel {
+            background: #fff;
+            padding: 25px 20px;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 30px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        .form-panel h2 {
+            font-size: 20px;
+            color: #1a2b4a;
+            margin-bottom: 4px;
+        }
+        .form-panel .sub {
+            font-size: 13px;
+            color: #6b7a93;
+            margin-bottom: 20px;
+            border-left: 3px solid #1a2b4a;
+            padding-left: 12px;
+        }
+        .form-group { margin-bottom: 14px; }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 13px;
+            color: #1a2b4a;
+            margin-bottom: 3px;
+        }
+        .form-group label .req { color: #d93025; }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1.5px solid #dce1eb;
+            border-radius: 8px;
+            font-size: 14px;
+            background: #fafbfc;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+        .form-group input:focus, .form-group select:focus {
+            border-color: #1a2b4a;
+            outline: none;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(26,43,74,0.1);
+        }
+        .form-row { display: flex; gap: 12px; }
+        .form-row .form-group { flex: 1; }
+
+        .btn-preview {
+            width: 100%;
+            padding: 12px;
+            background: #1a2b4a;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 6px;
+        }
+        .btn-preview:hover { background: #2a3d62; }
+
+        /* ===== ПРАВА КОЛОНКА: ДОКУМЕНТ ===== */
+        .preview-panel {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            padding: 25px 30px;
+        }
+        .preview-panel .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+            border-bottom: 2px solid #eef2f7;
+            padding-bottom: 15px;
+        }
+        .preview-panel .toolbar span {
+            font-weight: 700;
+            color: #1a2b4a;
+            font-size: 18px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        .toolbar .actions {
+            display: flex;
+            gap: 10px;
+        }
+        .toolbar .actions button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-print { background: #1a2b4a; color: #fff; }
+        .btn-print:hover { background: #2a3d62; }
+        .btn-download { background: #2a7de1; color: #fff; }
+        .btn-download:hover { background: #1a6ac9; }
+
+        /* ===== СТИЛІ САМОЇ ЗАЯВКИ (як у документі) ===== */
+        .document {
+            background: #fff;
+            padding: 40px 35px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #000;
+            border: 1px solid #d0d7e2;
+            border-radius: 8px;
+            font-family: 'Times New Roman', 'Courier New', serif;
+        }
+        .document .header-right {
+            text-align: right;
+            font-size: 13px;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+        .document .doc-title {
+            text-align: center;
+            font-weight: 700;
+            font-size: 17px;
+            margin: 20px 0 10px 0;
+            letter-spacing: 1px;
+        }
+        .document .doc-sub {
+            text-align: center;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+        .document .p {
+            margin-bottom: 8px;
+            text-align: justify;
+        }
+        .document .p .label {
+            font-weight: 700;
+        }
+        .document .p .fill {
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+        .document .list {
+            margin-left: 25px;
+            margin-bottom: 8px;
+        }
+        .document .list li {
+            margin-bottom: 4px;
+        }
+        .document .signature {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .document .signature .left {
+            font-size: 13px;
+        }
+        .document .signature .right {
+            text-align: center;
+        }
+        .document .signature .right .name {
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .document .signature .right .line {
+            display: inline-block;
+            width: 150px;
+            border-bottom: 1px solid #000;
+            margin-right: 10px;
+        }
+        .document .m-p {
+            text-align: right;
+            margin-top: 5px;
+            font-size: 13px;
+        }
+        .document .field-line {
+            display: flex;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+        .document .field-line .lbl {
+            font-weight: 700;
+            margin-right: 4px;
+        }
+
+        /* ===== АДАПТИВ ===== */
+        @media (max-width: 992px) {
+            .app-wrapper { grid-template-columns: 1fr; }
+            .form-panel { position: static; }
+        }
+        @media (max-width: 600px) {
+            .document { padding: 20px 15px; }
+            .toolbar .actions { flex-direction: column; width: 100%; }
+            .toolbar .actions button { justify-content: center; }
+            .form-row { flex-direction: column; gap: 0; }
+        }
+
+        /* ===== ПРИ ДРУКУ ===== */
+        @media print {
+            .form-panel, .toolbar { display: none !important; }
+            .app-wrapper { display: block !important; }
+            .preview-panel { box-shadow: none !important; padding: 0 !important; }
+            .document { border: 1px solid #aaa !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-wrapper">
+
+    <!-- ============ ФОРМА (ЛІВА КОЛОНКА) ============ -->
+    <div class="form-panel">
+        <h2>📋 Дані для заявки</h2>
+        <div class="sub">Заповніть поля — документ праворуч оновиться миттєво</div>
+
+        <div class="form-group">
+            <label>Номер заявки <span class="req">*</span></label>
+            <input type="text" id="appNumber" placeholder="напр. ТФ-1-СУЯ-2025-0001" oninput="updatePreview()">
+        </div>
+
+        <div class="form-group">
+            <label>Повна назва (в називному відмінку) <span class="req">*</span></label>
+            <input type="text" id="orgName" placeholder="ТОВ «Приклад-Україна»" oninput="updatePreview()">
+        </div>
+
+        <div class="form-group">
+            <label>Скорочена назва</label>
+            <input type="text" id="orgShort" placeholder="ТОВ «Приклад»" oninput="updatePreview()">
+        </div>
+
+        <div class="form-group">
+            <label>Юридична адреса <span class="req">*</span></label>
+            <input type="text" id="legalAddress" placeholder="вул. Центральна, 1, м. Київ, 01001" oninput="updatePreview()">
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>ЄДРПОУ <span class="req">*</span></label>
+                <input type="text" id="edrpou" placeholder="12345678" oninput="updatePreview()">
+            </div>
+            <div class="form-group">
+                <label>ІПН <span class="req">*</span></label>
+                <input type="text" id="ipn" placeholder="123456789012" oninput="updatePreview()">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Сфера сертифікації (продукція / послуги) <span class="req">*</span></label>
+            <input type="text" id="scope" placeholder="надання послуг з управління якістю" oninput="updatePreview()">
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Код ДК 016 <span class="req">*</span></label>
+                <input type="text" id="dk016" placeholder="64.20" oninput="updatePreview()">
+            </div>
+            <div class="form-group">
+                <label>Код ДК 009 <span class="req">*</span></label>
+                <input type="text" id="dk009" placeholder="72.19.1" oninput="updatePreview()">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Фактична адреса виробництва/офісу</label>
+            <input type="text" id="physicalAddress" placeholder="вул. Фактична, 5, м. Кривий Ріг" oninput="updatePreview()">
+        </div>
+
+        <div class="form-group">
+            <label>Банківські реквізити</label>
+            <input type="text" id="bankDetails" placeholder="р/р UA12... в АТ «Банк»" oninput="updatePreview()">
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Телефон (для зв'язку) <span class="req">*</span></label>
+                <input type="tel" id="phone" placeholder="+38 (067) 123-45-67" oninput="updatePreview()">
+            </div>
+            <div class="form-group">
+                <label>E-mail (для зв'язку)</label>
+                <input type="email" id="emailContact" placeholder="info@company.com" oninput="updatePreview()">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Посада (особа для зв'язку)</label>
+                <input type="text" id="contactPosition" placeholder="Начальник відділу якості" oninput="updatePreview()">
+            </div>
+            <div class="form-group">
+                <label>ПІБ (особа для зв'язку)</label>
+                <input type="text" id="contactName" placeholder="Петренко Петро Петрович" oninput="updatePreview()">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Загальна чисельність (чол.)</label>
+                <input type="text" id="totalStaff" placeholder="150" oninput="updatePreview()">
+            </div>
+            <div class="form-group">
+                <label>з них ефективна (чол.)</label>
+                <input type="text" id="effectiveStaff" placeholder="120" oninput="updatePreview()">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Кількість змін</label>
+            <input type="text" id="shifts" placeholder="2" oninput="updatePreview()">
+        </div>
+
+        <button class="btn-preview" onclick="window.scrollTo({top:0, behavior:'smooth'}); updatePreview();">🔄 Оновити заявку</button>
+    </div>
+
+    <!-- ============ ПЕРЕГЛЯД ЗАЯВКИ (ПРАВА КОЛОНКА) ============ -->
+    <div class="preview-panel">
+        <div class="toolbar">
+            <span>📄 Заявка ТФ-1-СУЯ</span>
+            <div class="actions">
+                <button class="btn-print" onclick="window.print()">🖨️ Роздрукувати / PDF</button>
+                <button class="btn-download" onclick="downloadDoc()">⬇️ Завантажити .doc</button>
+            </div>
+        </div>
+
+        <!-- Контейнер для документа -->
+        <div id="documentContainer" class="document">
+            <!-- Заповнюється через JavaScript -->
+        </div>
+        <div style="margin-top:14px; font-size:12px; color:#8a9bb5; font-family:'Segoe UI', sans-serif; text-align:center;">
+            Натисніть «Роздрукувати» → оберіть «Зберегти як PDF» або надішліть на принтер.
+        </div>
+    </div>
+</div>
+
+<script>
+    // ===================================================
+    //  ФУНКЦІЯ ОНОВЛЕННЯ ПОПЕРЕДНЬОГО ПЕРЕГЛЯДУ
+    // ===================================================
+    function updatePreview() {
+        // Зчитуємо дані з форми
+        const appNumber = document.getElementById('appNumber').value || '_____';
+        const orgName = document.getElementById('orgName').value || '___________';
+        const orgShort = document.getElementById('orgShort').value || '___________';
+        const legalAddr = document.getElementById('legalAddress').value || '___________';
+        const edrpou = document.getElementById('edrpou').value || '___________';
+        const ipn = document.getElementById('ipn').value || '___________';
+        const scope = document.getElementById('scope').value || '___________';
+        const dk016 = document.getElementById('dk016').value || '___________';
+        const dk009 = document.getElementById('dk009').value || '___________';
+        const physicalAddr = document.getElementById('physicalAddress').value || 'не вказано';
+        const bankDetails = document.getElementById('bankDetails').value || '___________';
+        const phone = document.getElementById('phone').value || '___________';
+        const emailContact = document.getElementById('emailContact').value || '___________';
+        const contactPosition = document.getElementById('contactPosition').value || '___________';
+        const contactName = document.getElementById('contactName').value || '___________';
+        const totalStaff = document.getElementById('totalStaff').value || '___';
+        const effectiveStaff = document.getElementById('effectiveStaff').value || '___';
+        const shifts = document.getElementById('shifts').value || '___';
+
+        // Автоматична дата (сьогодні)
+        const today = new Date();
+        const dateStr = today.toLocaleDateString('uk-UA', {
+            day: '2-digit', month: '2-digit', year: 'numeric'
+        });
+
+        // Формуємо HTML-код заявки згідно з документом ТФ-1-СУЯ
+        const docHtml = `
+            <div class="header-right">
+                <strong>Заступнику керівника</strong><br>
+                органа сертифікації систем менеджменту<br>
+                <strong>ДП «ДНІПРОСТАНДАРТМЕТРОЛОГІЯ»</strong><br>
+                <strong>КРИВОРІЗЬКА ФІЛІЯ</strong><br>
+                вул. Криворіжсталі, 23 м. Кривий Ріг, 50005
+            </div>
+
+            <div class="doc-title">ЗАЯВКА</div>
+            <div style="text-align:center; font-size:15px; margin-bottom:12px;">
+                № <span class="fill">${appNumber}</span> від <span class="fill">${dateStr}</span>
+            </div>
+            <div style="text-align:center; font-size:15px; font-weight:700; margin-bottom:22px;">
+                на проведення сертифікації системи управління якістю
+            </div>
+
+            <!-- Пункт 1 -->
+            <div class="p">
+                <span class="label">1</span>
+                <span class="fill">${orgName}</span> (скорочено - <span class="fill">${orgShort}</span>),
+                <span class="fill">${legalAddr}</span>, код ЄДРПОУ <span class="fill">${edrpou}</span>,
+                ІПН <span class="fill">${ipn}</span> в особі керівника організації Сендецької Ольги Олександрівни,
+                просить провести сертифікацію системи управління якістю.
+            </div>
+
+            <!-- Пункт 2 -->
+            <div class="p">
+                <span class="label">2</span> Відомості про систему управління якістю та про виробництво продукції (надання послуг).
+            </div>
+            <div class="p" style="padding-left:25px;">
+                2.1 Система управління якістю впроваджена в <strong>2025 році</strong> та задовольняє вимогам стандарту <strong>ДСТУ ISO 9001:2015, ДСТУ EN ISO 9001:2018</strong>.
+            </div>
+            <div class="p" style="padding-left:25px;">
+                2.2 Функціонування системи управління якістю контролюється шляхом проведення регулярних внутрішніх перевірок. Ефективність системи управління якістю оцінюється на підставі аналізу результатів перевірок.
+            </div>
+            <div class="p" style="padding-left:25px;">
+                2.3 Загальний опис системи управління якістю міститься у таких основних документах: <strong>НЯ 01-2025 «Настанова щодо якості», Інструкція «Управління ризиками».</strong>
+            </div>
+            <div class="p" style="padding-left:25px;">
+                2.4 Позначення та назва стандарту (державного, міждержавного, міжнародного), на відповідність якому передбачено перевірити (оцінити) систему управління якістю:<br>
+                <strong>ДСТУ ISO 9001:2015 «Системи управління якістю. Вимоги»,</strong><br>
+                <strong>ДСТУ EN ISO 9001:2018 «Системи управління якістю. Вимоги»,</strong>
+            </div>
+            <div class="p" style="padding-left:25px;">
+                2.5 Назва продукції (послуги), щодо якої передбачено перевірити (оцінити) систему управління якістю: <strong><span class="fill">${scope}</span></strong> (коди згідно ДК 016:2010: <strong><span class="fill">${dk016}</span></strong>; коди згідно ДК 009:2010: <strong><span class="fill">${dk009}</span></strong>).
+            </div>
+            <div class="p" style="padding-left:25px;">
+                2.6 Позначення стандарту(ів), чи інших нормативних документів, згідно з якими виробляється продукція (надаються послуги): <strong>чинна нормативна документація України.</strong>
+            </div>
+
+            <!-- Пункт 3 -->
+            <div class="p" style="margin-top:14px;">
+                <span class="label">3</span> Заявник зобов'язується:
+            </div>
+            <ul class="list" style="list-style-type:'- '; padding-left:30px;">
+                <li>виконувати всі умови сертифікації;</li>
+                <li>оплатити всі витрати, пов'язані з проведенням робіт з сертифікації системи управління якістю, незалежно від їх результатів.</li>
+            </ul>
+
+            <!-- Пункт 4 -->
+            <div class="p" style="margin-top:14px;">
+                <span class="label">4</span> Додаткові відомості:
+            </div>
+            <div class="p" style="padding-left:25px;">
+                4.1 Заявка на сертифікацію системи управління якістю в інші Органи сертифікації не подавалась.
+            </div>
+            <div class="p" style="padding-left:25px;">
+                4.2 Загальна чисельність персоналу: <span class="fill"><strong>${totalStaff}</strong></span> чол. (в тому числі ефективного - <span class="fill"><strong>${effectiveStaff}</strong></span>)
+                <br><span style="font-size:12px; color:#444;">* Ефективна чисельність персоналу складається з усього персоналу (постійного, тимчасового та позаштатного), залученого до сфери сертифікації, включно з тим, хто працює в кожну зміну. У разі включення в сферу сертифікації, вона також повинна включати непостійний персонал (наприклад, підрядники)</span>
+            </div>
+            <div class="p" style="padding-left:25px;">
+                4.3 Кількість змін: <span class="fill"><strong>${shifts}</strong></span>
+            </div>
+            <div class="p" style="padding-left:25px;">
+                4.4 Виробництво розташоване за адресою: <span class="fill">${physicalAddr}</span>.
+            </div>
+            <div class="p" style="padding-left:25px;">
+                4.5 Філії знаходяться за адресою: <strong>не має.</strong>
+            </div>
+            <div class="p" style="padding-left:25px;">
+                4.6 Банківські реквізити підприємства: <span class="fill">${bankDetails}</span>.
+            </div>
+            <div class="p" style="padding-left:25px;">
+                4.7 Особа для зв'язку: <strong>посада</strong> <span class="fill">${contactPosition}</span>, <strong>ПІБ</strong> <span class="fill">${contactName}</span>, <strong>тел.</strong> <span class="fill">${phone}</span>, <strong>e-mail</strong> <span class="fill">${emailContact}</span>
+            </div>
+
+            <!-- Підписи -->
+            <div class="signature">
+                <div class="left">
+                    <strong>Керівник організації</strong>
+                </div>
+                <div class="right">
+                    <span class="line"></span>
+                    <span class="name">Ольга СЕНДЕЦЬКА</span>
+                </div>
+            </div>
+            <div class="m-p">М.П.</div>
+        `;
+
+        // Вставляємо в контейнер
+        document.getElementById('documentContainer').innerHTML = docHtml;
+    }
+
+    // ===================================================
+    //  ФУНКЦІЯ ЗАВАНТАЖЕННЯ .DOC (для Microsoft Word)
+    // ===================================================
+    function downloadDoc() {
+        const content = document.getElementById('documentContainer').innerHTML;
+
+        const fullHtml = `
+            <html xmlns:o='urn:schemas-microsoft-com:office:office'
+                  xmlns:w='urn:schemas-microsoft-com:office:word'
+                  xmlns='http://www.w3.org/TR/REC-html40'>
+            <head>
+                <meta charset="utf-8">
+                <title>Заявка ТФ-1-СУЯ</title>
+                <style>
+                    body { font-family: 'Times New Roman', serif; padding: 40px; max-width: 800px; margin: 0 auto; line-height:1.5; }
+                    .header-right { text-align: right; margin-bottom: 20px; }
+                    .doc-title { text-align: center; font-weight: 700; font-size: 18px; margin: 20px 0 10px; }
+                    .p { margin-bottom: 6px; text-align: justify; }
+                    .list { margin-left: 25px; margin-bottom: 8px; }
+                    .list li { margin-bottom: 4px; }
+                    .fill { text-decoration: underline; text-underline-offset: 2px; }
+                    .signature { margin-top: 30px; display: flex; justify-content: space-between; align-items: center; }
+                    .signature .right .line { display: inline-block; width: 150px; border-bottom: 1px solid #000; margin-right: 10px; }
+                    .signature .right .name { font-weight: 700; letter-spacing: 1px; }
+                    .m-p { text-align: right; margin-top: 5px; }
+                    .label { font-weight: 700; }
+                </style>
+            </head>
+            <body>
+                ${content}
+            </body>
+            </html>
+        `;
+
+        const blob = new Blob([fullHtml], { type: 'application/msword;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        const companyName = document.getElementById('orgName').value || 'компанія';
+        link.download = `Заявка_ТФ-1-СУЯ_${companyName}.doc`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    }
+
+    // ===================================================
+    //  АВТОМАТИЧНЕ ЗАПОВНЕННЯ НОМЕРА ЗАЯВКИ
+    // ===================================================
+    function generateAppNumber() {
+        const year = new Date().getFullYear();
+        const random = String(Math.floor(Math.random() * 10000)).padStart(4, '0');
+        return `ТФ-1-СУЯ-${year}-${random}`;
+    }
+
+    // При завантаженні сторінки заповнюємо номер і оновлюємо прев'ю
+    window.onload = function() {
+        const numField = document.getElementById('appNumber');
+        if (!numField.value) {
+            numField.value = generateAppNumber();
+        }
+        updatePreview();
+    };
+</script>
+
+</body>
+</html>
